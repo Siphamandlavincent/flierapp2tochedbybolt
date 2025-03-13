@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact SPHA Solutions</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <style>
+        :root {
+            --primary-color: #a4fc79;
+            --secondary-color: #333;
+            --accent-color: #90ee90;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .contact-container {
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            margin: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--secondary-color);
+            font-weight: bold;
+        }
+
+        input, textarea, select {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-top: 0.25rem;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        button {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo img {
+            height: 80px;
+            width: 80px;
+            margin-bottom: 1rem;
+            object-fit: contain;
+            border-radius: 50%;
+        }
+
+        #status-message {
+            text-align: center;
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+        }
+
+        .success {
+            background-color: var(--primary-color);
+            color: var(--secondary-color);
+        }
+
+        .error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        .back-button {
+            display: inline-block;
+            margin-top: 1rem;
+            color: var(--secondary-color);
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="contact-container">
+        <div class="logo">
+            <img src="Spha Apps [Logo].png" alt="SPHA Apps Logo">
+            <h2>Contact Us</h2>
+        </div>
+        
+        <form id="contact-form">
+            <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="tel" id="phone" name="phone" required>
+            </div>
+
+            <div class="form-group">
+                <label for="service">Service Needed</label>
+                <select id="service" name="service" required>
+                    <option value="">Select a service</option>
+                    <option value="PC Repair">PC Repair</option>
+                    <option value="Laptop Repair">Laptop Repair</option>
+                    <option value="Phone Repair">Phone Repair</option>
+                    <option value="Virus Removal">Virus Removal</option>
+                    <option value="Data Recovery">Data Recovery</option>
+                    <option value="Other">Other</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="message">Describe Your Problem</label>
+                <textarea id="message" name="message" required></textarea>
+            </div>
+
+            <button type="submit">Send Message</button>
+        </form>
+
+        <div id="status-message"></div>
+        <a href="/" class="back-button">← Back to Home</a>
+    </div>
+
+    <script>
+        (function() {
+            emailjs.init("ljlCfMvfp-UGXC5g9");
+
+            document.getElementById('contact-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const statusMessage = document.getElementById('status-message');
+                statusMessage.className = '';
+                statusMessage.textContent = 'Sending message...';
+
+                const templateParams = {
+                    from_name: document.getElementById('name').value,
+                    reply_to: document.getElementById('email').value,
+                    phone_number: document.getElementById('phone').value,
+                    service_type: document.getElementById('service').value,
+                    message: document.getElementById('message').value
+                };
+
+                emailjs.send('service_ogfusvy', 'template_uoq26em', templateParams)
+                    .then(function() {
+                        statusMessage.className = 'success';
+                        statusMessage.textContent = 'Message sent successfully! We will contact you soon.';
+                        document.getElementById('contact-form').reset();
+                    }, function(error) {
+                        statusMessage.className = 'error';
+                        statusMessage.textContent = 'Failed to send message. Please try again later.';
+                        console.error('EmailJS error:', error);
+                    });
+            });
+        })();
+    </script>
+</body>
+</html>
